@@ -1,84 +1,85 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Stars, OrbitControls } from "@react-three/drei";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import * as THREE from "three";
+import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Preload } from "@react-three/drei";
+import { Suspense } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-function FloatingCube() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.5;
-    }
-  });
-
+function FloatingGeometry() {
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <octahedronGeometry args={[2, 0]} />
-      <meshStandardMaterial color="#00d2ff" wireframe emissive="#00d2ff" emissiveIntensity={2} />
+    <mesh>
+      <icosahedronGeometry args={[2.5, 0]} />
+      <meshStandardMaterial 
+        color="#915eff" 
+        wireframe 
+        transparent 
+        opacity={0.8}
+      />
     </mesh>
   );
 }
 
 export default function Hero() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(titleRef.current, {
-        y: 100,
-        opacity: 0,
-        duration: 1.5,
-        ease: "power4.out",
-        delay: 0.5
-      });
-
-      gsap.to(containerRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-        y: 200,
-        opacity: 0,
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={containerRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#050505]">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
-          <FloatingCube />
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          <OrbitControls enableZoom={false} enablePan={false} />
+    <section className="relative w-full h-screen mx-auto bg-[#0b0b1a]">
+      <div className="absolute inset-0 top-[120px] max-w-7xl mx-auto px-6 flex flex-row items-start gap-5">
+        <div className="flex flex-col justify-center items-center mt-5">
+          <div className="w-5 h-5 rounded-full bg-[#915EFF]" />
+          <div className="w-1 sm:h-80 h-40 bg-gradient-to-b from-[#915EFF] to-transparent" />
+        </div>
+
+        <div>
+          <h1 className="font-black text-white lg:text-[80px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mt-2">
+            Hi, I'm <span className="text-[#915EFF]">Abdur Rehman</span>
+          </h1>
+          <p className="font-medium text-[#dfd9ff] lg:text-[30px] sm:text-[26px] xs:text-[20px] text-[16px] lg:leading-[40px] mt-2 max-w-2xl text-white-100">
+            Autonomous System Architect & <br className="sm:block hidden" />
+            Cybersecurity Specialist
+          </p>
+        </div>
+      </div>
+
+      <div className="absolute inset-0 top-[200px] sm:top-[300px] w-full h-[60%] sm:h-full z-0 cursor-grab active:cursor-grabbing">
+        <Canvas
+          shadows
+          frameloop="demand"
+          dpr={[1, 2]}
+          camera={{ position: [20, 3, 5], fov: 25 }}
+          gl={{ preserveDrawingBuffer: true }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={2} color="#ffffff" />
+            <directionalLight position={[-10, -10, -5]} intensity={1} color="#915eff" />
+            <OrbitControls
+              enableZoom={false}
+              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={Math.PI / 2}
+              autoRotate
+              autoRotateSpeed={2}
+            />
+            <FloatingGeometry />
+          </Suspense>
+          <Preload all />
         </Canvas>
       </div>
 
-      <div className="z-10 text-center px-4" ref={titleRef}>
-        <h1 className="text-6xl md:text-8xl font-bold mb-4 tracking-tighter mix-blend-difference cyber-text">
-          ABDUR REHMAN
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-400 font-light max-w-2xl mx-auto">
-          Autonomous System Architect & Cybersecurity Specialist
-        </p>
-        <div className="mt-8 py-2 px-6 border border-[#00d2ff] text-[#00d2ff] rounded-full inline-block uppercase tracking-widest text-sm font-semibold hover:bg-[#00d2ff] hover:text-black transition-colors cursor-pointer backdrop-blur-sm">
-          Enter Protocol
-        </div>
+      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
+        <a href="#experience">
+          <div className="w-[35px] h-[64px] rounded-3xl border-4 border-white/50 flex justify-center items-start p-2">
+            <motion.div
+              animate={{
+                y: [0, 24, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className="w-3 h-3 rounded-full bg-white mb-1"
+            />
+          </div>
+        </a>
       </div>
     </section>
   );
