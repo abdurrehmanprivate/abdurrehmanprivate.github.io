@@ -1,32 +1,67 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ═══════════════════════════════════════════════════════════
+   TAILWIND V4 THEME — Reference-aligned design tokens
+   ═══════════════════════════════════════════════════════════ */
 
 @theme {
+  /* Breakpoints — includes xs from reference */
+  --breakpoint-xs: 450px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Colors */
   --color-primary: #050816;
   --color-secondary: #aaa6c3;
   --color-tertiary: #151030;
   --color-black-100: #100d25;
   --color-black-200: #090325;
   --color-white-100: #f3f3f3;
+  --color-hero-bg: #050810;
+  --color-card-bg: #1d1836;
+  --color-accent: #5eead4;
+  --color-violet: #915EFF;
+
+  /* Shadow */
   --shadow-card: 0px 35px 120px -15px #211e35;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   BASE RESETS
+   ═══════════════════════════════════════════════════════════ */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   color-scheme: dark;
 }
 
-body {
-  background-color: var(--color-primary);
-  color: white;
+html {
+  scroll-behavior: smooth;
 }
+
+body {
+  font-family: "Poppins", system-ui, sans-serif;
+  background-color: #050810;
+  color: #eae5ec;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES — from reference styles.js
+   ═══════════════════════════════════════════════════════════ */
 
 .hash-span {
   margin-top: -100px;
@@ -37,9 +72,191 @@ body {
 .violet-gradient {
   background: #804dee;
   background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
-  background: -webkit-linear-gradient(
-    -90deg,
-    #804dee 0%,
-    rgba(60, 51, 80, 0) 100%
-  );
+}
+
+.teal-gradient {
+  background: linear-gradient(0deg, #0d9488, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glassmorphism {
+  background: rgba(5, 8, 16, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(94, 234, 212, 0.08);
+}
+
+.teal-glow {
+  box-shadow: 0px 0px 5px 2px #67e8f9,
+    0px 0px 15px 8px rgba(94, 234, 212, 0.3),
+    0px 0px 60px 10px rgba(165, 243, 252, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STAR-FIELD BACKGROUND
+   ═══════════════════════════════════════════════════════════ */
+
+.star-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star-field::before,
+.star-field::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: white;
+  box-shadow:
+    25vw 10vh 0 0 rgba(255, 255, 255, 0.3),
+    50vw 20vh 0 0 rgba(255, 255, 255, 0.2),
+    75vw 15vh 0 0 rgba(255, 255, 255, 0.4),
+    10vw 40vh 0 0 rgba(255, 255, 255, 0.2),
+    30vw 55vh 0 0 rgba(255, 255, 255, 0.3),
+    60vw 45vh 0 0 rgba(255, 255, 255, 0.15),
+    85vw 30vh 0 0 rgba(255, 255, 255, 0.25),
+    15vw 70vh 0 0 rgba(255, 255, 255, 0.3),
+    45vw 75vh 0 0 rgba(255, 255, 255, 0.2),
+    70vw 65vh 0 0 rgba(255, 255, 255, 0.35),
+    90vw 80vh 0 0 rgba(255, 255, 255, 0.15),
+    5vw 85vh 0 0 rgba(255, 255, 255, 0.25),
+    35vw 90vh 0 0 rgba(255, 255, 255, 0.2),
+    55vw 50vh 0 0 rgba(255, 255, 255, 0.3),
+    80vw 60vh 0 0 rgba(255, 255, 255, 0.15),
+    20vw 25vh 0 0 rgba(255, 255, 255, 0.2),
+    65vw 35vh 0 0 rgba(255, 255, 255, 0.25),
+    40vw 10vh 0 0 rgba(255, 255, 255, 0.3),
+    95vw 50vh 0 0 rgba(255, 255, 255, 0.2),
+    12vw 60vh 0 0 rgba(255, 255, 255, 0.15);
+  animation: starTwinkle 8s ease-in-out infinite alternate;
+}
+
+.star-field::after {
+  width: 1px;
+  height: 1px;
+  box-shadow:
+    8vw 5vh 0 0 rgba(255, 255, 255, 0.15),
+    22vw 18vh 0 0 rgba(255, 255, 255, 0.1),
+    38vw 8vh 0 0 rgba(255, 255, 255, 0.2),
+    52vw 32vh 0 0 rgba(255, 255, 255, 0.1),
+    68vw 22vh 0 0 rgba(255, 255, 255, 0.15),
+    82vw 12vh 0 0 rgba(255, 255, 255, 0.2),
+    18vw 48vh 0 0 rgba(255, 255, 255, 0.1),
+    42vw 62vh 0 0 rgba(255, 255, 255, 0.15),
+    58vw 78vh 0 0 rgba(255, 255, 255, 0.1),
+    72vw 88vh 0 0 rgba(255, 255, 255, 0.2),
+    88vw 42vh 0 0 rgba(255, 255, 255, 0.1),
+    2vw 92vh 0 0 rgba(255, 255, 255, 0.15);
+  animation: starTwinkle 6s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AMBIENT GLOW ORBS
+   ═══════════════════════════════════════════════════════════ */
+
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-orb-1 {
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background-color: rgba(34, 211, 238, 0.08);
+  animation: orbFloat1 12s ease-in-out infinite alternate;
+}
+
+.ambient-orb-2 {
+  bottom: 20%;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background-color: rgba(145, 94, 255, 0.06);
+  animation: orbFloat2 15s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, 30px) scale(1.1); }
+}
+
+@keyframes orbFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-30px, -40px) scale(1.15); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VERTICAL TIMELINE OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+
+.vertical-timeline::before {
+  background: linear-gradient(to top, #14b8a6 20%, #5eead4 50%, transparent 95%) !important;
+  width: 3px !important;
+}
+
+.vertical-timeline-element-content {
+  background: #1d1836 !important;
+  border: 1px solid rgba(94, 234, 212, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 12px !important;
+  padding: 28px 32px !important;
+}
+
+.vertical-timeline-element-content-arrow {
+  border-right-color: #232631 !important;
+}
+
+.vertical-timeline-element-date {
+  color: #5eead4 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.5px !important;
+}
+
+.vertical-timeline-element-icon {
+  box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.15),
+    0 0 20px rgba(94, 234, 212, 0.2) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050810;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(94, 234, 212, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5eead4;
 }
